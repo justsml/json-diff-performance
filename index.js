@@ -40,25 +40,25 @@ function printEfficiency(summaries) {
   var min = totals[0], 
       max = totals[totals.length - 1];
 
-  summaries.map(function(result) {
+  summaries.forEach(function(result) {
     console.log('===> Testing'.red, result.name)
-    console.log('\tTotal Size: '.magenta, result.totalSize, '\tSize-per-stage: ', result.stepSizes.join(' -> '));
-    console.log(('\t% delta(' + max + '): ').yellow, '+' + getPercentChange(max, result.totalSize) + '%', '\t%-change:       ', getChangesInArray(result.stepSizes).join(' -> +'), '\n');
+    console.log('\tTotal Diff Size: '.magenta, result.totalSize, '\tSize-per-stage: ', result.stepSizes.join(' -> '))
+    console.log(('\t% delta(' + max + '): ').yellow, '+' + getPercentChange(max, result.totalSize) + '%', '\t%-change:       ', getChangesInArray(result.stepSizes).join(' -> +'), '\n')
   })
   
-  console.log('Difference in efficiency between biggest & smallest:\n\t', getPercentChange(max, min) + '%');
+  console.log('Difference in efficiency between biggest & smallest diff set:'.yellow.bold, '\t', (getPercentChange(max, min) + '%').red, '\n');
 }
 function getChangesInArray(arr) {
   return arr.reduce(function(prev, curr, idx, arr) {
     if ( idx === 0 ) { return prev; }
     var chg = getPercentChange(arr[idx], arr[idx - 1])
     prev.push(chg + '%')
-    return prev;
+    return prev
   }, [arr[0]])
 }
 
 function getPercentChange(n1, n2) {
-  return (parseFloat((n1 - n2) / parseFloat(n1)) * 100.0).toFixed(0);
+  return (parseFloat((n1 - n2) / parseFloat(n1)) * 100.0).toFixed(0)
 }
 
 
