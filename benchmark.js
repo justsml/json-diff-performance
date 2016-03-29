@@ -13,7 +13,9 @@ var tests = Object.keys(testLibs)
 
 function testDiffCreation() {
 	tests.forEach(function _checkResults(name) {
-	  suite.add('Generate Diffs: ' + name, testLibs[name].getArrayOfSequentialDiffs)
+	  suite.add(name.magenta + '	Simple Diffs Benchmark: '.green, testLibs[name].getArrayOfSequentialDiffs)
+	  suite.add(name.magenta + '	Variable String Test:   '.green, testLibs[name].getVariableStringDiffs)
+	  // suite.add('Generate Diffs: ' + name, testLibs[name].getArrayOfSequentialDiffs)
 	})
 	suite
 		.on('cycle', function(event) {

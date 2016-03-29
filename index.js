@@ -19,12 +19,24 @@ var summaries = tests.map(function _checkResults(name) {
   return result
 })
 
+// this gets the summaries for variable string chunks, probably could organize this better, but i'm tired...
+var summaryChunks = tests.map(function _checkResults(name) {
+  var testPkg = testLibs[name]
+  var result  = summarizeSizes(testPkg.getVariableStringDiffs())
+  result.name = name;
+  return result
+})
+
+console.log('  Simple/Basic Diffs'.green);
 printEfficiency(summaries);
+
+console.log('\n\n  Variable String Chunk Diffs'.green);
+printEfficiency(summaryChunks);
 
 function summarizeSizes(data) {
   var totalSize = 0
   var stepSizes = []
-  var rawSteps = data.map(function _summarize(obj) { 
+  var rawSteps = data.map(function _summarize(obj) {
     var raw = JSON.stringify(obj)
     stepSizes.push(raw.length)
     totalSize += raw.length
@@ -37,15 +49,15 @@ function printEfficiency(summaries) {
   var totals = summaries
     .map(function(s) {return s.totalSize})
     .sort(function(a, b) {return a - b});
-  var min = totals[0], 
+  var min = totals[0],
       max = totals[totals.length - 1];
 
   summaries.forEach(function(result) {
-    console.log('===> Testing'.red, result.name)
-    console.log('\tTotal Diff Size: '.magenta, result.totalSize, '\tSize-per-stage: ', result.stepSizes.join(' -> '))
-    console.log(('\t% delta(' + max + '): ').yellow, '+' + getPercentChange(max, result.totalSize) + '%', '\t%-change:       ', getChangesInArray(result.stepSizes).join(' -> +'), '\n')
+    console.log('    => Testing'.red, result.name)
+    console.log('      Total Diff Size: '.magenta, result.totalSize, '\tSize-per-stage: ', result.stepSizes.join(' -> '))
+    console.log(('      % delta(' + max + '): ').yellow, '+' + getPercentChange(max, result.totalSize) + '%', '\t%-change:       ', getChangesInArray(result.stepSizes).join(' -> +'), '\n')
   })
-  
+
   console.log('Difference in efficiency between biggest & smallest diff set:'.yellow.bold, '\t', (getPercentChange(max, min) + '%').red, '\n');
 }
 function getChangesInArray(arr) {
