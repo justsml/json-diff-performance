@@ -48,7 +48,7 @@ npm test
 
 > Test Environment: MacBook Pro 2.5Ghz 16GB (2015)
 
-![image](https://cloud.githubusercontent.com/assets/397632/14156163/34860800-f682-11e5-9aad-df88484f7c49.png)
+![image](https://cloud.githubusercontent.com/assets/397632/14176553/d568d374-f70e-11e5-8909-a98e05a6f41c.png)
 
 > Test Environment: Debian i7-4790K 4.0GHz 32GB
 
