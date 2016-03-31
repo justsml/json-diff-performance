@@ -1,30 +1,33 @@
 require('colors');
 
 var Benchmark = require('benchmark')
-var suite = new Benchmark.Suite
 
 var testLibs = {
 	'jsondiffpatch': 	require('./tests/jsondiffpatch'),
 	'deep-diff': 			require('./tests/deep-diff'),
 	'json-diff': 			require('./tests/json-diff'),
+	'odiff': 					require('./tests/odiff'),
 }
-
 var tests = Object.keys(testLibs)
 
-function testDiffCreation() {
+function testDiffCreation(title, testMethodName, next) {
+	var suite = new Benchmark.Suite()
 	tests.forEach(function _checkResults(name) {
-	  suite.add(name.magenta + '	Simple Diffs Benchmark: '.green, testLibs[name].getArrayOfSequentialDiffs)
-	  suite.add(name.magenta + '	Variable String Test:   '.green, testLibs[name].getVariableStringDiffs)
-	  // suite.add('Generate Diffs: ' + name, testLibs[name].getArrayOfSequentialDiffs)
+	  suite.add(name.magenta + '	' + title + ': '.green, testLibs[name][testMethodName])
 	})
-	suite
-		.on('cycle', function(event) {
-		  console.log('Benchmarked:'.yellow, String(event.target).green)
-		})
-		.on('complete', function() {
-		  console.log('Fastest is '.magenta + String(this.filter('fastest').map('name')).red.bold)
-		})
-		.run({ 'async': false })
+	return suite
+	.on('cycle', function(event) {
+	  console.log('Benchmarked:'.yellow, String(event.target).green)
+	})
+	.on('complete', function() {
+	  console.log('Fastest is '.magenta + String(this.filter('fastest').map('name')).red.bold);
+	  if (next) { next(); }
+	})
+	.run({ 'async': false })
 }
 
-testDiffCreation()
+console.log('=== TESTS OPS/SECOND ==='.magenta);
+testDiffCreation('Simple Diffs Benchmark', 'getArrayOfSequentialDiffs', function _next() {
+	testDiffCreation('Variable String Test', 'getVariableStringDiffs');
+});
+

@@ -5,10 +5,9 @@ var testLibs = {
   'jsondiffpatch':  require('./tests/jsondiffpatch'),
   'deep-diff':      require('./tests/deep-diff'),
   'json-diff':      require('./tests/json-diff'),
+  'odiff':          require('./tests/odiff'),
 }
-console.log('\n=== NOTE: COMPARE OUTPUTS TO VERIFY RESULTS ==='.magenta)
-console.log('=== ALTERNATELY: RUN THE BENCHMARKING SUITE:'.gray)
-console.log('$ npm test\n'.yellow, '\n')
+console.log('=== TESTS OUTPUT STRING SIZE ==='.magenta);
 
 var tests = Object.keys(testLibs)
 
@@ -30,7 +29,7 @@ var summaryChunks = tests.map(function _checkResults(name) {
 console.log('  Simple/Basic Diffs'.green);
 printEfficiency(summaries);
 
-console.log('\n\n  Variable String Chunk Diffs'.green);
+console.log('  Variable String Chunk Diffs'.green);
 printEfficiency(summaryChunks);
 
 function summarizeSizes(data) {
@@ -55,10 +54,10 @@ function printEfficiency(summaries) {
   summaries.forEach(function(result) {
     console.log('    => Testing'.red, result.name)
     console.log('      Total Diff Size: '.magenta, result.totalSize, '\tSize-per-stage: ', result.stepSizes.join(' -> '))
-    console.log(('      % delta(' + max + '): ').yellow, '+' + getPercentChange(max, result.totalSize) + '%', '\t%-change:       ', getChangesInArray(result.stepSizes).join(' -> +'), '\n')
+    console.log(('      % delta(' + max + '): ').yellow, '+' + getPercentChange(max, result.totalSize) + '%', '\t%-change:       ', getChangesInArray(result.stepSizes).join(' -> +'), '')
   })
 
-  console.log('Difference in efficiency between biggest & smallest diff set:'.yellow.bold, '\t', (getPercentChange(max, min) + '%').red, '\n');
+  console.log('Difference in size between biggest & smallest diff set:'.yellow.bold, '\t', (getPercentChange(max, min) + '%').red, '\n');
 }
 function getChangesInArray(arr) {
   return arr.reduce(function(prev, curr, idx, arr) {
