@@ -7,6 +7,7 @@ var testLibs = {
 	'deep-diff': 			require('./tests/deep-diff'),
 	'json-diff': 			require('./tests/json-diff'),
 	'odiff': 					require('./tests/odiff'),
+	'fast-json-patch':				require('./tests/fast-json-patch')
 }
 var tests = Object.keys(testLibs)
 
